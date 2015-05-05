@@ -1,0 +1,78 @@
+#sidepanel {
+	float: left;
+	width: 330px;
+	padding: 10px;
+}
+#main {
+	margin-left: 350px;
+	padding: 25px;
+	overflow: hidden;
+}
+
+#process-text {
+	text-align: center;
+	
+	&:after {
+		content: '...';
+	}
+}
+#photowindow {
+	width: 50%;
+	height: 500px;
+	margin: 10px auto 25px;
+	text-align: center;
+}
+
+#flickr-photostream {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border: 1px solid #999;
+	border-width: 1px 0 0 1px;
+	
+	li {
+		float: left;
+		position: relative;
+		width: 105px;
+		height: 105px;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		border: 1px solid #999;
+		border-width: 0 1px 1px 0;
+		
+		&.unchecked {
+			background: #ccc;
+			opacity: .25;
+			
+			span i {
+				color: #fff;
+			}
+		}
+		
+		&:hover {
+			background: #fe9;
+			cursor:pointer;
+		}
+		
+		input {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+		}
+		
+		span i {
+			position: absolute;
+			top: 5px;
+			left: 5px;
+			border: 1px solid #000;
+			border-radius: 3px;
+			background: #fff;
+			padding: 2px;
+		}
+		
+		img {
+			padding: 15px;
+		}
+	}
+}
