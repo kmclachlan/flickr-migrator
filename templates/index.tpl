@@ -59,7 +59,7 @@ var migratedPhotos = 0;
 var photoData = {};
 
 function migratePhoto() {
-	$photo = $('#flickr-photostream li:first');
+	$photo = $('#flickr-photostream li.photo:first');
 	if ($photo.size() == 0) {
 		// @todo we're done!
 		alert('All done!');
@@ -80,7 +80,7 @@ function migratePhoto() {
 		
 		$.get('500px.php?do=upload&id=' + $photo.data('id'), photo, function(response) {
 			if (response == 'ok') {
-				$('#flickr-photostream li:first').remove();
+				$('#flickr-photostream li.photo:first').remove();
 
 				migratedPhotos++;
 
@@ -102,10 +102,16 @@ $(function () {
 			$('#step-migrate').show();
 			$('#main').show();
 			
+			lastYear = 9999;
 			$.getJSON('flickr.php?do=get_photostream', function(data) {
 				$.each(data.photos, function(id, photo) {
+					year = new Date(photo.date_uploaded * 1000).getFullYear();
+					if (year != lastYear) {
+						$('#flickr-photostream').append('<li class="separator">' + year + '</li>');
+						lastYear = year;
+					}
 					//$('#flickr-photostream').append('<li data-id="' + id + '"><input type="checkbox" checked><img src="' + url + '" /></li>');
-					$('#flickr-photostream').append('<li data-id="' + id + '"><span><i class="fa fa-check"></i></span><img src="' + photo.url_t + '" /></li>');
+					$('#flickr-photostream').append('<li class="photo" data-id="' + id + '"><span><i class="fa fa-check"></i></span><img src="' + photo.url_t + '" /></li>');
 					
 					photoData[id] = photo;
 				});

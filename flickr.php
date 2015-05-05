@@ -36,6 +36,7 @@ switch ($_REQUEST['do']) {
 		$options = array(
 			'content_type' => 1,
 			'extras' => 'url_sq,url_z,url_o,description,date_upload,date_taken,tags',
+			'per_page' => 500
 		);
 		$photos = $f->clean_text_nodes($f->people_getPhotos('me', $options));
 		

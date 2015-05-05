@@ -10,9 +10,9 @@ namespace Abraham\TwitterOAuth;
 class Config
 {
     /** @var int How long to wait for a response from the API */
-    protected $timeout = 50;
+    protected $timeout = 5;
     /** @var int how long to wait while connecting to the API */
-    protected $connectionTimeout = 50;
+    protected $connectionTimeout = 5;
     /**
      * Decode JSON Response as associative Array
      *

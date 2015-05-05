@@ -9,6 +9,7 @@ switch ($_REQUEST['do']) {
 		if ($_SESSION['500px_access_token']) {
 			$access_token = $_SESSION['500px_access_token'];
 			$connection = new TwitterOAuth(FIVEHUNDREDPX_API_KEY, FIVEHUNDREDPX_API_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
+			$connection->setTimeouts(5, 60); // Large Flickr files could take a long time to 500px to download
 			
 			$photos = $connection->get("photos", array('feature' => 'popular'));
 			
@@ -18,10 +19,6 @@ switch ($_REQUEST['do']) {
 				'category' => 0,
 				'tags' => str_replace(' ', ',', $_REQUEST['tags'])
 			));
-
-			//error_Log(print_r($key_response, 1));
-			
-
 
 			$upload_key = $key_response->upload_key;
 			$photo_id = $key_response->photo->id;
@@ -34,8 +31,6 @@ switch ($_REQUEST['do']) {
 				'access_key' => $access_key,
 				'remote_url' => $_REQUEST['url_o'],
 			));
-
-			//error_Log(print_r($upload_result, 1));
 
 			if ($upload_result->error == 'None.') {
 				echo 'ok';
