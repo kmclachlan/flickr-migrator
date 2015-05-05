@@ -8,7 +8,7 @@ switch ($_REQUEST['do']) {
 	case 'upload':
 		if ($_SESSION['500px_access_token']) {
 			$access_token = $_SESSION['500px_access_token'];
-			$connection = new TwitterOAuth('ix8NQZKQntGHt20OcX2ehtBwXcYl1kIHPc3nSgv8', 'z1nOcyFgNFgQk3da1Gz6OHSK7gXS4tGPcOAFrxNl', $access_token['oauth_token'], $access_token['oauth_token_secret']);
+			$connection = new TwitterOAuth(FIVEHUNDREDPX_API_KEY, FIVEHUNDREDPX_API_SECRET, $access_token['oauth_token'], $access_token['oauth_token_secret']);
 			
 			$photos = $connection->get("photos", array('feature' => 'popular'));
 			
@@ -29,7 +29,7 @@ switch ($_REQUEST['do']) {
 			
 			$upload_result = $connection->post('upload', array(
 				'photo_id' => $photo_id,
-				'consumer_key' => 'ix8NQZKQntGHt20OcX2ehtBwXcYl1kIHPc3nSgv8',
+				'consumer_key' => FIVEHUNDREDPX_API_KEY,
 				'upload_key' => $upload_key,
 				'access_key' => $access_key,
 				'remote_url' => $_REQUEST['url_o'],
@@ -62,7 +62,7 @@ switch ($_REQUEST['do']) {
 			    die();
 			}
 			
-			$connection = new TwitterOAuth('ix8NQZKQntGHt20OcX2ehtBwXcYl1kIHPc3nSgv8', 'z1nOcyFgNFgQk3da1Gz6OHSK7gXS4tGPcOAFrxNl', $request_token['oauth_token'], $request_token['oauth_token_secret']);
+			$connection = new TwitterOAuth(FIVEHUNDREDPX_API_KEY, FIVEHUNDREDPX_API_SECRET, $request_token['oauth_token'], $request_token['oauth_token_secret']);
 			$access_token = $connection->oauth("oauth/access_token", array("oauth_verifier" => $_REQUEST['oauth_verifier']));
 			$_SESSION['500px_access_token'] = $access_token;
 			
@@ -72,7 +72,7 @@ switch ($_REQUEST['do']) {
 		}
 		
 		if ($_REQUEST['do'] == 'authorize' || empty($_SESSION['500px_oauth_token'])) {
-			$connection = new TwitterOAuth('ix8NQZKQntGHt20OcX2ehtBwXcYl1kIHPc3nSgv8', 'z1nOcyFgNFgQk3da1Gz6OHSK7gXS4tGPcOAFrxNl');
+			$connection = new TwitterOAuth(FIVEHUNDREDPX_API_KEY, FIVEHUNDREDPX_API_SECRET);
 			$request_token = $connection->oauth('oauth/request_token', array('oauth_callback' => 'http://dev.migrate.500px.com/500px.php'));
 			$_SESSION['500px_oauth_token'] = $request_token['oauth_token'];
 			$_SESSION['500px_oauth_token_secret'] = $request_token['oauth_token_secret'];

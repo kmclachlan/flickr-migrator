@@ -3,11 +3,9 @@
 require_once 'lib/init.php';
 require_once 'lib/phpFlickr/phpFlickr.php';
 
-$api_key                 = "007bf5fb0ca012fa78d4f573790ebc9e";
-$api_secret              = "a889316be3115624";
 ob_start();
 
-$f = new phpFlickr($api_key, $api_secret);
+$f = new phpFlickr(FLICKR_API_KEY, FLICKR_API_SECRET);
 
 switch ($_REQUEST['do']) {
 	case 'get_photo_metadata':

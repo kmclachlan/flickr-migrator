@@ -1,0 +1,13 @@
+<?php
+
+// Rename me to config.inc.php
+
+// Flickr API keys
+define('FLICKR_API_KEY', '');
+define('FLICKR_API_SECRET', '');
+
+// 500px API keys
+define('FIVEHUNDREDPX_API_KEY', '');
+define('FIVEHUNDREDPX_API_SECRET', '');
+
+?>
