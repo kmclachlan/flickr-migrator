@@ -16,7 +16,4 @@ if (!empty($_SESSION['500px_access_token']) && is_array($_SESSION['500px_access_
 
 $TPL->display('index.tpl');
 
-echo '<pre>';
-var_dump($_SESSION);
-
 ?>
