@@ -81,6 +81,11 @@ function migratePhoto() {
 		$.get('500px.php?do=upload&id=' + $photo.data('id'), photo, function(response) {
 			if (response == 'ok') {
 				$('#flickr-photostream li:first').remove();
+
+				migratedPhotos++;
+
+				$('#migration-process .progress-bar').width((migratedPhotos / totalPhotos * 100) + '%');
+
 		 		migratePhoto();
 			} else {
 				alert('Something happened! Aborting\n' + response);
