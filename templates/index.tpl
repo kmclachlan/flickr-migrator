@@ -139,41 +139,53 @@
 </div>*}
 
 {if $FLICKR_LOGGEDIN}
-	<div id="select-photos" style="display:none">
-		<div class="container">
-			<div id="migration-process" style="display:none">
-				<div class="progress" style="height:40px">
-					<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 0%;">
-						
-					</div>
-				</div>
-				
-				<h4 id="process-text"></h4>
-				<div id="photowindow">
-					<img src="blank.png" style="max-height:500px;" />
+	<div id="photo-migration">
+		<div id="migration-process" class="container" style="display:none">
+			<p class="text-center"><span id="migrated-count">0</span> of <span id="migrated-total">0</span> photos migrated</p>
+			<div class="progress" style="height:40px">
+				<div class="progress-bar progress-bar-striped active" role="progressbar" style="width: 0%;">
+					
 				</div>
 			</div>
+			
+			<h4 id="process-text"></h4>
+			<div id="photowindow">
+				<img src="blank.png" style="max-height:500px;" />
+			</div>
 		</div>
-		
-		<div id="photos-container" class="container-fluid">
-			<div class="row">
-				<div class="col-sm-12">
-					<ul id="flickr-photostream" class="clearfix"></ul>
+
+		<div id="select-photos" style="display:none">
+			<div id="photos-loading" class="jumbotron text-center">
+				<h1 class="lead">Fetching your Flickr photos...</h1>
+				<div class="spinner">
+				  <div class="double-bounce1"></div>
+				  <div class="double-bounce2"></div>
+				</div>
+			</div>
+
+			<div id="photos-container" class="container-fluid" style="display:none">
+				<h2>Your Flickr Photos</h2>
+				<div class="row">
+					<div class="col-sm-12">
+						<ul id="flickr-photostream" class="clearfix"></ul>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	
-	<footer>
-		<div class="container">
-			<div id="photostream-controls">
-				<a class="btn btn-lg btn-primary pull-right" id="btn-migrate-photos">Migrate Photos <span class="badge">0</span></a>
-				
-				<button class="btn btn-lg btn-default btn-checkall" data-check="true">Check All</button>
-				<button class="btn btn-lg btn-default btn-checkall" data-check="false">Uncheck All</button> <br />
+	{if $500PX_LOGGEDIN}
+		<footer>
+			<div class="container">
+				<div id="photostream-controls">
+					<a class="btn btn-lg btn-primary pull-right disabled" id="btn-migrate-photos">Migrate Photos <span class="badge">0</span></a>
+					
+					<button class="btn btn-lg btn-default btn-checkall" data-check="true">Check All</button>
+					<button class="btn btn-lg btn-default btn-checkall" data-check="false">Uncheck All</button> <br />
+				</div>
 			</div>
-		</div>
-	</footer>
+		</footer>
+	{/if}
 {/if}
 
 <script type="text/javascript">
@@ -208,6 +220,8 @@ function migratePhoto() {
 				migratedPhotos++;
 
 				$('#migration-process .progress-bar').width((migratedPhotos / totalPhotos * 100) + '%');
+				$('#migrated-count').text(migratedPhotos);
+
 
 		 		migratePhoto();
 			} else {
@@ -242,6 +256,14 @@ $(function () {
 					
 					photoData[id] = photo;
 				});
+
+				$('#photos-loading').fadeOut(500);
+				$('#photos-container').fadeIn(500);
+
+				count = $('#flickr-photostream li.photo').not('.unchecked').size();
+				if (count > 0) {
+					$('#btn-migrate-photos').removeClass('disabled').find('.badge').text(count);
+				}
 			});
 		{/if}
 	{/if}
@@ -251,7 +273,7 @@ $(function () {
 	});*/
 	
 	function updateMigrateButton() {
-		count = $('#flickr-photostream li').not('.unchecked').size();
+		count = $('#flickr-photostream li.photo').not('.unchecked').size();
 		if (count > 0) {
 			$('#btn-migrate-photos').removeClass('disabled').find('.badge').text(count);
 		} else {
@@ -277,74 +299,28 @@ $(function () {
 		updateMigrateButton();
 	});
 	
-	$('#select-photos').css('min-height', $(window).height());
+	$('#photo-migration').css('min-height', $(window).height());
 	
 	$('#btn-choose-photos').click(function() {
 		$('html, body').animate({ scrollTop: $(window).height() }, 1000);
 	});
 	
 	$('#btn-migrate-photos').click(function() {
-		$('#flickr-photostream li.unchecked').fadeOut(500, function() { $(this).remove(); });
-		$('#photostream-controls').fadeOut(500);
-		$('#flickr-photostream li span').fadeOut(500);
-		$('#flickr-photostream').width(1000000000);
-		$('#sidepanel').animate({ marginLeft:-350 }, 500);
-		$('#main').animate({ marginLeft:0 }, 500, function() {
+		//$('#photostream-controls').fadeOut(500);
+		//$('#flickr-photostream li span').fadeOut(500);
+		//$('#flickr-photostream').width(1000000000);
+		//$('#sidepanel').animate({ marginLeft:-350 }, 500);
+		//$('#flickr-photostream li.unchecked').fadeOut(500, function() { $(this).remove(); });
+		$('html, body').animate({ scrollTop: $(window).height() }, 1000);
+		$('footer').fadeOut(500);
+		$('#select-photos').fadeOut(500, function() {
+			$('#flickr-photostream li.unchecked').remove();
 			$('#migration-process').fadeIn(500);
-			totalPhotos = $('#flickr-photostream li').not('.unchecked').size();
+			totalPhotos = $('#flickr-photostream li.photo').not('.unchecked').size();
+			$('#migrated-total').text(totalPhotos);
 			setTimeout(function() { migratePhoto(); }, 1000);
 		});
 	});
-
-	{*
-	_500px.init({
-		sdk_key: 'f3eed0432bdd45c041993a33f803afd625902d4b'
-	});
-
-	// When the user logs in we will pull their favorite photos
-	_500px.on('authorization_obtained', function () {
-		
-		$('#step-500px').hide();
-		$('#step-migrate').show();
-		$('#main').show();
-		
-		$.getJSON('flickr.php?do=get_photostream', function(data) {
-			$.each(data.photos, function(id, photo) {
-				//$('#flickr-photostream').append('<li data-id="' + id + '"><input type="checkbox" checked><img src="' + url + '" /></li>');
-				$('#flickr-photostream').append('<li data-id="' + id + '"><span><i class="fa fa-check"></i></span><img src="' + photo.url_t + '" /></li>');
-				
-				photoData[id] = photo;
-			});
-		});
-		
-		/*// Get my user id
-		_500px.api('/users', function (response) {
-			var me = response.data.user;
-
-			// Get my favorites
-			_500px.api('/photos', { feature: 'user_favorites', user_id: me.id }, function (response) {
-				if (response.data.photos.length == 0) {
-					alert('You have no favorite photos.');
-				} else {
-					$.each(response.data.photos, function () {
-						$('#500px-photos').append('<img src="' + this.image_url + '" />');
-					});
-				}
-			});
-		});*/
-	});
-
-	_500px.on('logout', function () {
-		$('#not_logged_in').show();
-		$('#logged_in').hide();
-		$('#logged_in').html('');
-	});
-
-	// If the user has already logged in & authorized your application, this will fire an 'authorization_obtained' event
-	_500px.getAuthorizationStatus();
-
-	// If the user clicks the login link, log them in
-	$('#500px-login').click(_500px.login);*}
 });
 </script>
 

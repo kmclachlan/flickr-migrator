@@ -35,7 +35,7 @@ switch ($_REQUEST['do']) {
 			if ($upload_result->error == 'None.') {
 				echo 'ok';
 			} else {
-				echo $result->error . ' - ' . $result->status;
+				echo $upload_result->error . ' - ' . $upload_result->status;
 			}
 		} else {
 			echo 'No access token';
