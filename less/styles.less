@@ -1,7 +1,85 @@
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+}
+.container {
+	position: relative;
+}
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background: #fff;
+	z-index: 9;
+	padding: 10px;
+}
+
+#main-header {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	background: #fff;
+	
+	#bg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		opacity: .2;
+		background: url('../bg.jpg') no-repeat center center fixed; 
+		-webkit-background-size: cover;
+		-moz-background-size: cover;
+		-o-background-size: cover;
+		background-size: cover;
+		 -webkit-filter: blur(2px);
+	}
+	
+	.container {
+		max-width: 700px;
+	}
+	
+	.jumbotron {
+		background: transparent;
+		text-align:center;
+		
+		padding-left: 0;
+		padding-right: 0;
+	}
+	
+	h3 {
+		font-weight: bold;
+		
+		&.step-done {
+			color: #090;
+		}
+	}
+	
+	.btn-lg {
+		font-weight: bold;
+	}
+}
+
+#btn-migrate-photos .badge {
+	color: #000;
+}
+#btn-migrate-photos.disabled .badge {
+	display: none;
+}
+
 #sidepanel {
 	float: left;
 	width: 330px;
 	padding: 10px;
+}
+#select-photos {
+	border-top: 1px solid #ccc;
+	padding-top: 25px;
+	background: #f7f8fa;
 }
 #main {
 	margin-left: 350px;

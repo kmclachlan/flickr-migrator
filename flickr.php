@@ -40,9 +40,17 @@ switch ($_REQUEST['do']) {
 		);
 		$photos = $f->clean_text_nodes($f->people_getPhotos('me', $options));
 		
-		$response = array();
-		$response['photos'] = array();
-		foreach ($photos['photos']['photo'] as $i => $photo) {
+		$photos = $photos['photos'];
+		
+		$response = array(
+			'page' => $photos['page'],
+			'pages' => $photos['pages'],
+			'perpage' => $photos['perpage'],
+			'total' => $photos['total'],
+			'photos' => array()
+		);
+
+		foreach ($photos['photo'] as $i => $photo) {
 			$response['photos'][$photo['id']] = array(
 				'url_t' => $photo['url_sq'],
 				'url_m' => $photo['url_z'],
